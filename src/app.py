@@ -54,9 +54,12 @@ def detectar_objetos_en_imagen(ruta_modelo, ruta_imagen):
 
     modelo = torch.hub.load('ultralytics/yolov5', 'custom', path=ruta_modelo)
     modelo.to(dispositivo)
-    
 
     imagen = cv2.imread(ruta_imagen)
+
+    # Redimensionar la imagen si no es de tamaño 640x640
+    if imagen.shape[:2] != (160, 160):
+        imagen = cv2.resize(imagen, (160, 160))
 
     results = modelo(imagen)
     results.print()
@@ -75,13 +78,13 @@ def detectar_objetos_en_imagen(ruta_modelo, ruta_imagen):
 if __name__ == '__main__':
     # Rutas de los archivos y directorios
     directorio_actual = Path(__file__).resolve().parent
-    ruta_modelo = directorio_actual.parent / 'model' / 'nuevo.pt'
-    ruta_video_entrada = str(directorio_actual.parent / 'video' / 'video2.mp4')
+    ruta_modelo = directorio_actual.parent / 'model' / 'yolov5.pt'
+    ruta_video_entrada = str(directorio_actual.parent / 'video' / 'video.avi')
     ruta_video_salida = str(directorio_actual.parent / 'video' / 'video_salida.avi')
-    ruta_imagen = str(directorio_actual.parent / 'images' / 'varroabee.jpg')
+    ruta_imagen = str(directorio_actual.parent / 'images' / 'varroa5.png')
 
     # Detectar objetos en un video
     #detectar_objetos_en_video(ruta_modelo, ruta_video_entrada, ruta_video_salida)
 
     # Detectar objetos en una imagen
-    #detectar_objetos_en_imagen(ruta_modelo, ruta_imagen)
+    detectar_objetos_en_imagen(ruta_modelo, ruta_imagen)
